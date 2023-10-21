@@ -15,7 +15,7 @@ exports.up = (pgm) => {
       notNull: true,
     },
     genre: {
-      type: 'TEXT[]',
+      type: 'TEXT',
       notNull: true,
     },
     performer: {
