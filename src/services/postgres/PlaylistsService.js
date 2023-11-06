@@ -30,7 +30,7 @@ class PlaylistsService {
       text: `SELECT playlists.id, playlists.name, users.username
       FROM playlists 
       LEFT JOIN users ON users.id = playlists.owner
-      WHERE owner = $1`,
+      WHERE playlists.owner = $1`,
       values: [owner],
     };
 
@@ -40,7 +40,10 @@ class PlaylistsService {
 
   async getById(id) {
     const query = {
-      text: 'SELECT * FROM playlists WHERE id = $1',
+      text: `SELECT playlists.id, playlists.name, playlists.owner, users.username
+      FROM playlists 
+      LEFT JOIN users ON users.id = playlists.owner
+      WHERE playlists.id = $1`,
       values: [id],
     };
 
