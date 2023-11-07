@@ -23,8 +23,8 @@ class PlaylistsHandler {
   }
 
   async get(request) {
-    const { id: owner } = request.auth.credentials;
-    const playlists = await this._service.get(owner);
+    const { id: userId } = request.auth.credentials;
+    const playlists = await this._service.get(userId);
     return {
       status: 'success',
       data: {
