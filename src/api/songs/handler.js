@@ -4,7 +4,7 @@ class SongsHandler {
     this._validator = validator;
   }
 
-  post = async (request, h) => {
+  async post(request, h) {
     this._validator.validateSongPayload(request.payload);
     const {
       title, year, genre, performer, duration, albumId,
@@ -23,9 +23,9 @@ class SongsHandler {
 
     response.code(201);
     return response;
-  };
+  }
 
-  getAll = async (request) => {
+  async getAll(request) {
     let songs = await this._service.get();
 
     if (request.query.title && request.query.performer) {
@@ -44,9 +44,9 @@ class SongsHandler {
         songs,
       },
     };
-  };
+  }
 
-  getById = async (request) => {
+  async getById(request) {
     const { id } = request.params;
 
     const song = await this._service.getById(id);
@@ -56,9 +56,9 @@ class SongsHandler {
         song,
       },
     };
-  };
+  }
 
-  putById = async (request) => {
+  async putById(request) {
     this._validator.validateSongPayload(request.payload);
     const { id } = request.params;
 
@@ -67,9 +67,9 @@ class SongsHandler {
       status: 'success',
       message: 'Lagu berhasil diperbarui',
     };
-  };
+  }
 
-  deleteById = async (request) => {
+  async deleteById(request) {
     const { id } = request.params;
 
     await this._service.deleteById(id);
@@ -77,7 +77,7 @@ class SongsHandler {
       status: 'success',
       message: 'Lagu berhasil dihapus',
     };
-  };
+  }
 }
 
 module.exports = SongsHandler;
