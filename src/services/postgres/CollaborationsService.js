@@ -3,13 +3,11 @@ const { nanoid } = require('nanoid');
 const InvariantError = require('../../exceptions/InvariantError');
 
 class CollaborationsService {
-  constructor(usersService) {
+  constructor() {
     this._pool = new Pool();
-    this._usersService = usersService;
   }
 
   async add(playlistId, userId) {
-    await this._usersService.getById(userId);
     const id = `collab-${nanoid(16)}`;
 
     const query = {
