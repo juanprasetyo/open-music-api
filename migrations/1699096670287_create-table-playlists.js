@@ -22,7 +22,7 @@ exports.up = (pgm) => {
 };
 
 exports.down = (pgm) => {
-  pgm.dropTable('playlists');
+  pgm.dropConstraint('playlists', 'fk_playlist.owner_users.id');
 
-  pgm.dropConstraint('fk_playlist.owner_users.id');
+  pgm.dropTable('playlists');
 };
