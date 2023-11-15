@@ -41,7 +41,7 @@ class SongService {
 
     const result = await this._pool.query(query);
 
-    if (!result.rows.length) {
+    if (!result.rowCount) {
       throw new NotFoundError('Lagu tidak ditemukan');
     }
 
@@ -62,44 +62,32 @@ class SongService {
     const { title, performer } = queryParameter;
 
     const query = {
-      text: "SELECT * FROM songs WHERE LOWER(title) LIKE LOWER('%' || $1 || '%') AND LOWER(performer) LIKE LOWER('%' || $2 || '%')",
+      text: "SELECT id, title, performer FROM songs WHERE LOWER(title) LIKE LOWER('%' || $1 || '%') AND LOWER(performer) LIKE LOWER('%' || $2 || '%')",
       values: [title, performer],
     };
 
     const result = await this._pool.query(query);
-    return result.rows.map((song) => ({
-      id: song.id,
-      title: song.title,
-      performer: song.performer,
-    }));
+    return result.rows;
   }
 
   async getByTitle(title) {
     const query = {
-      text: "SELECT * FROM songs WHERE LOWER(title) LIKE LOWER('%' || $1 || '%')",
+      text: "SELECT id, title, performer FROM songs WHERE LOWER(title) LIKE LOWER('%' || $1 || '%')",
       values: [title],
     };
 
     const result = await this._pool.query(query);
-    return result.rows.map((song) => ({
-      id: song.id,
-      title: song.title,
-      performer: song.performer,
-    }));
+    return result.rows;
   }
 
   async getByPerformer(performer) {
     const query = {
-      text: "SELECT * FROM songs WHERE LOWER(performer) LIKE LOWER('%' || $1 || '%')",
+      text: "SELECT id, title, performer FROM songs WHERE LOWER(performer) LIKE LOWER('%' || $1 || '%')",
       values: [performer],
     };
 
     const result = await this._pool.query(query);
-    return result.rows.map((song) => ({
-      id: song.id,
-      title: song.title,
-      performer: song.performer,
-    }));
+    return result.rows;
   }
 
   async editById(id, {
@@ -113,7 +101,7 @@ class SongService {
 
     const result = await this._pool.query(query);
 
-    if (!result.rows.length) {
+    if (!result.rowCount) {
       throw new NotFoundError('Gagal memperbarui album. Id tidak ditemukan');
     }
   }
@@ -126,7 +114,7 @@ class SongService {
 
     const result = await this._pool.query(query);
 
-    if (!result.rows.length) {
+    if (!result.rowCount) {
       throw new NotFoundError('Lagu gagal dihapus. Id tidak ditemukan');
     }
   }

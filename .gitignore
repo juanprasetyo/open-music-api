@@ -3,3 +3,4 @@ NotesAPIPostmanFilesStarter/
 .DS_Store
 .env
 .prod.env
+src/api/uploads/file/
