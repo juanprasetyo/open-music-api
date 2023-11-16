@@ -20,17 +20,24 @@ class AlbumLikesHandler {
     return response;
   }
 
-  async get(request) {
+  async get(request, h) {
     const { id: albumId } = request.params;
 
     await this._albumsService.getById(albumId);
-    const likes = await this._albumLikesService.getTotalLikes(albumId);
-    return {
+    const { likes, source } = await this._albumLikesService.getTotalLikes(albumId);
+
+    const response = h.response({
       status: 'success',
       data: {
         likes,
       },
-    };
+    });
+
+    if (source === 'cache') {
+      response.header('X-Data-Source', 'cache');
+    }
+
+    return response;
   }
 
   async delete(request) {

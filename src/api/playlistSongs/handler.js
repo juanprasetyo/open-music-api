@@ -29,24 +29,30 @@ class PlaylistSongsHandler {
     return response;
   }
 
-  async getById(request) {
+  async getById(request, h) {
     const { id: playlistId } = request.params;
     const { id: owner } = request.auth.credentials;
 
     await this._playlistService.verifyPlaylistAccess(playlistId, owner);
 
     const playlist = await this._playlistService.getById(playlistId);
-    const songs = await this._playlistSongsService.getSongsByPlaylistId(playlistId);
+    const { songs, source } = await this._playlistSongsService.getSongsByPlaylistId(playlistId);
 
     delete playlist.owner;
     playlist.songs = songs;
 
-    return {
+    const response = h.response({
       status: 'success',
       data: {
         playlist,
       },
-    };
+    });
+
+    if (source === 'cache') {
+      response.header('X-Data-Source', 'cache');
+    }
+
+    return response;
   }
 
   async delete(request) {
